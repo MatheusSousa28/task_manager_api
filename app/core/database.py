@@ -1,31 +1,20 @@
-"""
-Configuração da conexão com o banco de dados e gerenciamento
-das sessões do SQLAlchemy para uso na aplicação.
-"""
+"""Configuração do SQLAlchemy e sessão por request."""
 
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
-import os
+from sqlalchemy.orm import declarative_base, sessionmaker
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+from app.core.config import settings
 
-#Cria a engine do banco, usando pool_pre_ping para validar conexões antes do uso e evitar conexões quebradas.
+is_sqlite = settings.database_url.startswith("sqlite")
 engine = create_engine(
-    DATABASE_URL,
-    pool_pre_ping=True
+    settings.database_url,
+    connect_args={"check_same_thread": False} if is_sqlite else {},
+    pool_pre_ping=True,
 )
-
-#Cria uma fábrica de sessões com controle manual de commit e flush para maior previsibilidade das transações.
-SessionLocal = sessionmaker(
-    autocommit=False,
-    autoflush=False,
-    bind=engine
-)
-
-#Base declarativa usada como classe base para todos os models do SQLAlchemy.
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
-#Dependency do FastAPI que cria uma sessão de banco por request e garante o fechamento ao final.
+
 def get_db():
     db = SessionLocal()
     try:
