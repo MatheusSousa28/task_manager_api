@@ -29,6 +29,16 @@ class UserPatch(BaseModel):
     active: bool | None = None
 
 
+class LoginRequest(BaseModel):
+    email: EmailStr
+    password: str = Field(..., min_length=8, max_length=128)
+
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+
+
 class TaskBase(BaseModel):
     title: str = Field(..., min_length=3, max_length=100)
     description: str | None = Field(None, max_length=1000)

@@ -4,12 +4,15 @@ from pydantic import EmailStr
 from sqlalchemy.orm import Session
 
 from app import models, schemas
+from app.security import hash_password
 
 
 # Usuários
 
 def create_user(db: Session, user: schemas.UserCreate):
-    db_user = models.User(**user.model_dump())
+    payload = user.model_dump()
+    payload["password"] = hash_password(payload["password"])
+    db_user = models.User(**payload)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -25,8 +28,13 @@ def get_user_by_email(db: Session, email: EmailStr):
 
 
 def update_user(db: Session, db_user: models.User, user_in: schemas.UserPatch):
-    for field, value in user_in.model_dump(exclude_unset=True).items():
+    patch_data = user_in.model_dump(exclude_unset=True)
+    if "password" in patch_data:
+        patch_data["password"] = hash_password(patch_data["password"])
+
+    for field, value in patch_data.items():
         setattr(db_user, field, value)
+
     db.commit()
     db.refresh(db_user)
     return db_user

@@ -1,3 +1,6 @@
+from app.security import decode_access_token
+
+
 def test_system_flow(client):
     user_payload = {
         "name": "Ana Souza",
@@ -28,3 +31,51 @@ def test_system_flow(client):
     list_tasks = client.get("/tasks/")
     assert list_tasks.status_code == 200
     assert len(list_tasks.json()) == 1
+
+
+def test_login_returns_jwt_token(client):
+    client.post(
+        "/users/",
+        json={
+            "name": "Carlos",
+            "email": "carlos@email.com",
+            "password": "12345678",
+        },
+    )
+
+    response = client.post(
+        "/auth/login",
+        json={
+            "email": "carlos@email.com",
+            "password": "12345678",
+        },
+    )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["token_type"] == "bearer"
+    assert isinstance(body["access_token"], str)
+
+    payload = decode_access_token(body["access_token"])
+    assert payload is not None
+    assert "sub" in payload
+
+
+def test_login_with_wrong_password_returns_401(client):
+    client.post(
+        "/users/",
+        json={
+            "name": "Bianca",
+            "email": "bianca@email.com",
+            "password": "12345678",
+        },
+    )
+
+    response = client.post(
+        "/auth/login",
+        json={
+            "email": "bianca@email.com",
+            "password": "senha-errada",
+        },
+    )
+    assert response.status_code == 401
