@@ -1,16 +1,20 @@
 # Task Manager API (FastAPI + SQLAlchemy)
 
-Projeto de portfólio com API REST para gestão de usuários e tarefas.
+REST API for managing users and tasks with JWT authentication,
+access control, and automated tests (unit, integration, and system).
+
+Project developed with a focus on backend best practices, including
+layer separation, security, and testability.
 
 ## Stack
 - FastAPI
 - SQLAlchemy ORM
 - SQLite (local)
-- Autenticação com senha hash (Argon2 + Passlib)
-- JWT com Python-JOSE
+- Password authentication with hashing (Argon2 + Passlib)
+- JWT with Python-JOSE
 - Pytest
 
-## Como rodar localmente
+## How to run locally
 
 ```bash
 python -m venv .venv
@@ -20,43 +24,45 @@ cp .env.example .env  # no Windows: copy .env.example .env
 uvicorn app.main:app --reload
 ```
 
-A API sobe em `http://127.0.0.1:8000`, acesse `http://127.0.0.1:8000/docs` para visualizar as rotas.
+The API will run at `http://127.0.0.1:8000`, access `http://127.0.0.1:8000/docs` to view the routes.
 
-## Banco de dados
-Por padrão, o banco local é SQLite em `task_manager.db`.
+## Database
+By default, the local database is SQLite at `task_manager.db`.
 
-Você pode sobrescrever com variável de ambiente:
+You can override it with an environment variable:
 
-```bash
+``` bash
 export DATABASE_URL="sqlite:///./task_manager.db"
 ```
 
-## Segurança
-- Senhas são armazenadas com hash Argon2 (nunca em texto puro).
-- Login gera `access_token` JWT com expiração.
-- `SECRET_KEY` e parâmetros de auth ficam no `.env`.
+## Security
+- Passwords are stored using Argon2 hashing.
+- Login generates a JWT `access_token` with expiration.
+- `SECRET_KEY` and auth parameters are stored in the `.env` file.
 
-## Rotas principais
-- `POST /users/` (cadastro)
+## Main endpoints
+- `POST /users/` (register)
 - `GET /users/{user_id}`
 - `GET /users/?user_email=...`
 - `PATCH /users/{user_id}`
 - `DELETE /users/{user_id}`
-- `POST /auth/login` (retorna JWT)
+- `POST /auth/login` (returns JWT)
 - `POST /tasks/`
 - `GET /tasks/{task_id}`
 - `GET /tasks/`
 - `PATCH /tasks/{task_id}`
 - `DELETE /tasks/{task_id}`
 
-## Testes (unitário, integração e sistema)
-Para rodar os testes:
-```bash
+## Tests (unit, integration, and system)
+To run the tests:
+``` bash
 pytest -q
 ```
 
-Arquivos de teste:
-- `tests/test_unit_schemas.py` (unitário)
-- `tests/test_unit_security.py` (unitário)
-- `tests/test_integration_crud.py` (integração)
-- `tests/test_system_api.py` (sistema)
+Test files:
+- `tests/test_unit_schemas.py` (unit)
+- `tests/test_unit_security.py` (unit)
+- `tests/test_integration_crud.py` (integration)
+- `tests/test_system_api.py` (system)
+
+[Read this in Brazilian Portuguese](README.pt.md)
