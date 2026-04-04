@@ -1,4 +1,4 @@
-"""Configuração do SQLAlchemy e sessão por request."""
+#Configuração do SQLAlchemy e sessão por request
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker

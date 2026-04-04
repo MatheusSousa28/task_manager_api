@@ -1,4 +1,4 @@
-"""Camada de acesso a dados (CRUD)."""
+#Camada de acesso a dados (CRUD)
 
 from pydantic import EmailStr
 from sqlalchemy.orm import Session
@@ -7,7 +7,7 @@ from app import models, schemas
 from app.security import hash_password
 
 
-# Usuários
+#Usuários
 
 def create_user(db: Session, user: schemas.UserCreate):
     payload = user.model_dump()
@@ -46,7 +46,7 @@ def delete_user(db: Session, db_user: models.User):
     return db_user
 
 
-# Tarefas
+#Tarefas
 
 def create_task(db: Session, task: schemas.TaskCreate):
     db_task = models.Task(**task.model_dump())

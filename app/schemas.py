@@ -1,4 +1,4 @@
-"""Schemas Pydantic para entrada e saída da API."""
+#Schemas Pydantic para entrada e saída da API
 
 from datetime import datetime
 

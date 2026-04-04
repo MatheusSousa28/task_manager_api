@@ -1,4 +1,4 @@
-"""Modelos ORM da aplicação."""
+#Modelos ORM da aplicação
 
 from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship

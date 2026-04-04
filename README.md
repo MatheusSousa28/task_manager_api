@@ -20,7 +20,7 @@ cp .env.example .env  # no Windows: copy .env.example .env
 uvicorn app.main:app --reload
 ```
 
-A API sobe em `http://127.0.0.1:8000`.
+A API sobe em `http://127.0.0.1:8000`, acesse `http://127.0.0.1:8000/docs` para visualizar as rotas.
 
 ## Banco de dados
 Por padrão, o banco local é SQLite em `task_manager.db`.
@@ -50,7 +50,7 @@ export DATABASE_URL="sqlite:///./task_manager.db"
 - `DELETE /tasks/{task_id}`
 
 ## Testes (unitário, integração e sistema)
-
+Para rodar os testes:
 ```bash
 pytest -q
 ```
