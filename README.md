@@ -16,11 +16,21 @@ layer separation, security, and testability.
 
 ## How to run locally
 
+### Linux/macOS
 ```bash
 python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\\Scripts\\activate
+source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env  # no Windows: copy .env.example .env
+cp .env.example .env
+uvicorn app.main:app --reload
+```
+
+### Windows (PowerShell)
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+copy .env.example .env
 uvicorn app.main:app --reload
 ```
 
@@ -55,6 +65,7 @@ export DATABASE_URL="sqlite:///./task_manager.db"
 
 ## Tests (unit, integration, and system)
 To run the tests:
+
 ``` bash
 pytest -q
 ```
